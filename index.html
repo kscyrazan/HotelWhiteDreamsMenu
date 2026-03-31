@@ -18,6 +18,7 @@
       --border:    rgba(62,207,178,0.18);
       --border-strong: rgba(62,207,178,0.4);
       --accent:    #e8c97a;
+      --nav-h:     48px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* ── GEOMETRIC BG PATTERN ── */
     body::before {
       content: '';
       position: fixed;
@@ -43,11 +43,6 @@
       z-index: 0;
     }
 
-    a {
-    color: inherit;
-    text-decoration: none;
-    }
-    
     /* ── HEADER ── */
     header {
       position: relative;
@@ -62,8 +57,7 @@
     header::before, header::after {
       content: '';
       position: absolute;
-      width: 120px;
-      height: 120px;
+      width: 120px; height: 120px;
       border: 1px solid var(--border-strong);
       opacity: 0.5;
     }
@@ -88,10 +82,7 @@
       line-height: 1.1;
     }
 
-    header h1 em {
-      font-style: italic;
-      color: var(--teal);
-    }
+    header h1 em { font-style: italic; color: var(--teal); }
 
     .hdr-rule {
       display: flex;
@@ -147,11 +138,11 @@
     }
 
     .nav-desktop a {
-      padding: 12px 14px;
+      padding: 12px 13px;
       color: var(--ivory-dim);
       text-decoration: none;
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
+      font-size: 0.61rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 600;
       border-bottom: 2px solid transparent;
@@ -200,8 +191,10 @@
       padding: 52px 20px 80px;
     }
 
-    /* ── SECTION ── */
+    /* ── FIX: scroll lands on the section title, not the first item ── */
     .menu-section {
+      /* offset for sticky nav height (approx 48px) + breathing room */
+      scroll-margin-top: 68px;
       margin-bottom: 52px;
       animation: rise 0.5s ease both;
     }
@@ -209,11 +202,11 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    .menu-section:nth-child(1) { animation-delay: 0.04s; }
-    .menu-section:nth-child(2) { animation-delay: 0.08s; }
-    .menu-section:nth-child(3) { animation-delay: 0.12s; }
-    .menu-section:nth-child(4) { animation-delay: 0.16s; }
-    .menu-section:nth-child(5) { animation-delay: 0.20s; }
+    .menu-section:nth-child(1)  { animation-delay: 0.04s; }
+    .menu-section:nth-child(2)  { animation-delay: 0.08s; }
+    .menu-section:nth-child(3)  { animation-delay: 0.12s; }
+    .menu-section:nth-child(4)  { animation-delay: 0.16s; }
+    .menu-section:nth-child(5)  { animation-delay: 0.20s; }
 
     .sec-head {
       display: flex;
@@ -253,7 +246,19 @@
       flex-shrink: 0;
     }
 
-    /* ── ITEM CARDS ── */
+    /* sub-section label inside a card */
+    .sub-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--teal-dim);
+      font-weight: 600;
+      padding: 10px 20px 8px;
+      background: rgba(62,207,178,0.05);
+      border-bottom: 1px solid rgba(62,207,178,0.1);
+    }
+
+    /* ── ITEMS ── */
     .menu-list {
       border: 1px solid var(--border);
       background: var(--panel);
@@ -315,9 +320,9 @@
     .menu-table thead tr { background: var(--teal-dark); }
 
     .menu-table thead th {
-      padding: 11px 16px;
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
+      padding: 11px 14px;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--ivory);
       font-weight: 600;
@@ -333,7 +338,7 @@
     .menu-table tbody tr:hover { background: rgba(62,207,178,0.06); }
 
     .menu-table td {
-      padding: 12px 16px;
+      padding: 12px 14px;
       font-size: 0.84rem;
       color: var(--ivory);
     }
@@ -373,6 +378,7 @@
       header { padding: 44px 16px 38px; }
       main { padding: 36px 14px 60px; }
       .menu-item { padding: 11px 14px; }
+      .menu-table thead th, .menu-table td { padding: 10px 8px; font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -391,7 +397,8 @@
 
 <nav>
   <div class="nav-desktop">
-    <a href="#hot-bev">Beverages</a>
+    <a href="#coffee">Coffee</a>
+    <a href="#hot-bev">Hot Drinks</a>
     <a href="#breakfast">Breakfast</a>
     <a href="#sandwich">Sandwich</a>
     <a href="#khaja">Khaja</a>
@@ -404,11 +411,18 @@
     <a href="#drinks">Drinks</a>
     <a href="#beer">Beer</a>
     <a href="#hookah">Hookah</a>
-    <a href="#liquor">Liquor</a>
+    <a href="#dom-liquor">Dom. Liquor</a>
+    <a href="#imp-liquor">Imp. Liquor</a>
   </div>
   <div class="nav-mobile">
-    <select onchange="if(this.value){document.querySelector(this.value).scrollIntoView({behavior:'smooth'});this.value='';}">
+    <select onchange="
+      if(this.value){
+        var el = document.querySelector(this.value);
+        if(el){ el.scrollIntoView({behavior:'smooth'}); }
+        this.value='';
+      }">
       <option value="">— Jump to section —</option>
+      <option value="#coffee">Coffee</option>
       <option value="#hot-bev">Hot Beverages</option>
       <option value="#breakfast">Breakfast</option>
       <option value="#sandwich">Sandwich</option>
@@ -422,17 +436,37 @@
       <option value="#drinks">Cold Drinks &amp; Juice</option>
       <option value="#beer">Beer &amp; Wine</option>
       <option value="#hookah">Hookah</option>
-      <option value="#liquor">Domestic Liquor</option>
+      <option value="#dom-liquor">Domestic Liquor</option>
+      <option value="#imp-liquor">Imported Liquor</option>
     </select>
   </div>
 </nav>
 
 <main>
 
-  <section class="menu-section" id="hot-bev">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Hot Beverages</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+  <!-- 01. Coffee -->
+  <section class="menu-section" id="coffee">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Coffee</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
+      <div class="sub-label">Hot Coffee</div>
+      <div class="menu-item"><span class="item-name">Espresso</span><span class="dots"></span><span class="item-price">120</span></div>
+      <div class="menu-item"><span class="item-name">Doppio</span><span class="dots"></span><span class="item-price">140</span></div>
+      <div class="menu-item"><span class="item-name">Americano — Single Shot</span><span class="dots"></span><span class="item-price">130</span></div>
+      <div class="menu-item"><span class="item-name">Americano — Double Shot</span><span class="dots"></span><span class="item-price">150</span></div>
       <div class="menu-item"><span class="item-name">Normal Coffee Milk / Black</span><span class="dots"></span><span class="item-price">125 / 100</span></div>
+      <div class="menu-item"><span class="item-name">Cappuccino</span><span class="dots"></span><span class="item-price">220</span></div>
+      <div class="menu-item"><span class="item-name">Hot Chocolate</span><span class="dots"></span><span class="item-price">300</span></div>
+      <div class="sub-label">Iced Coffee</div>
+      <div class="menu-item"><span class="item-name">Ice Americano</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Ice Cappuccino</span><span class="dots"></span><span class="item-price">270</span></div>
+      <div class="menu-item"><span class="item-name">Ice Latte</span><span class="dots"></span><span class="item-price">270</span></div>
+    </div>
+  </section>
+
+  <!-- 02. Hot Beverages -->
+  <section class="menu-section" id="hot-bev">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Hot Beverages</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="menu-list">
       <div class="menu-item"><span class="item-name">Tea Milk / Black</span><span class="dots"></span><span class="item-price">50 / 40</span></div>
       <div class="menu-item"><span class="item-name">Hot Lemon</span><span class="dots"></span><span class="item-price">60</span></div>
       <div class="menu-item"><span class="item-name">Hot Lemon with Honey</span><span class="dots"></span><span class="item-price">140</span></div>
@@ -440,25 +474,27 @@
     </div>
   </section>
 
+  <!-- 03. Breakfast -->
   <section class="menu-section" id="breakfast">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Breakfast</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Breakfast</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Pancake</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Fruits Salad</span><span class="dots"></span><span class="item-price">400</span></div>
-      <div class="menu-item"><span class="item-name">Puri Bhaji</span><span class="dots"></span><span class="item-price">220</span></div>
+      <div class="menu-item"><span class="item-name">Plain Toast</span><span class="dots"></span><span class="item-price">100</span></div>
       <div class="menu-item"><span class="item-name">Alu Paratha</span><span class="dots"></span><span class="item-price">220</span></div>
-      <div class="menu-item"><span class="item-name">French Breakfast</span><span class="dots"></span><span class="item-price">500</span></div>
-      <div class="menu-item"><span class="item-name">American Breakfast</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Puri Bhaji</span><span class="dots"></span><span class="item-price">220</span></div>
       <div class="menu-item"><span class="item-name">Bread Omelet</span><span class="dots"></span><span class="item-price">180</span></div>
       <div class="menu-item"><span class="item-name">Butter Toast</span><span class="dots"></span><span class="item-price">150</span></div>
-      <div class="menu-item"><span class="item-name">Plain Toast</span><span class="dots"></span><span class="item-price">100</span></div>
+      <div class="menu-item"><span class="item-name">Pancake</span><span class="dots"></span><span class="item-price">200</span></div>
       <div class="menu-item"><span class="item-name">French Toast</span><span class="dots"></span><span class="item-price">200</span></div>
       <div class="menu-item"><span class="item-name">Chana Anda</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">French Breakfast</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">American Breakfast</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Fruits Salad</span><span class="dots"></span><span class="item-price">400</span></div>
     </div>
   </section>
 
+  <!-- 04. Omelet -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Omelet</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Omelet</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Plain</span><span class="dots"></span><span class="item-price">60</span></div>
       <div class="menu-item"><span class="item-name">Masala</span><span class="dots"></span><span class="item-price">100</span></div>
@@ -466,8 +502,9 @@
     </div>
   </section>
 
+  <!-- 05. Sandwich -->
   <section class="menu-section" id="sandwich">
-    <div class="sec-head"><span class="sec-num">04</span><h2>Sandwich</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Sandwich</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Sandwich</span><span class="dots"></span><span class="item-price">200</span></div>
       <div class="menu-item"><span class="item-name">Egg Sandwich</span><span class="dots"></span><span class="item-price">220</span></div>
@@ -476,16 +513,18 @@
     </div>
   </section>
 
+  <!-- 06. Khaja Set -->
   <section class="menu-section" id="khaja">
-    <div class="sec-head"><span class="sec-num">05</span><h2>Khaja Set</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Khaja Set</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Chicken Khaja Set</span><span class="dots"></span><span class="item-price">420</span></div>
       <div class="menu-item"><span class="item-name">Mutton Khaja Set</span><span class="dots"></span><span class="item-price">600</span></div>
     </div>
   </section>
 
+  <!-- 07. Chowmein -->
   <section class="menu-section" id="noodles">
-    <div class="sec-head"><span class="sec-num">06</span><h2>Chowmein</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Chowmein</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Chowmein</span><span class="dots"></span><span class="item-price">180</span></div>
       <div class="menu-item"><span class="item-name">Egg Chowmein</span><span class="dots"></span><span class="item-price">220</span></div>
@@ -494,8 +533,9 @@
     </div>
   </section>
 
+  <!-- 08. Thukpa -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">07</span><h2>Thukpa</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Thukpa</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Thukpa</span><span class="dots"></span><span class="item-price">180</span></div>
       <div class="menu-item"><span class="item-name">Egg Thukpa</span><span class="dots"></span><span class="item-price">220</span></div>
@@ -504,8 +544,9 @@
     </div>
   </section>
 
+  <!-- 09. Nepali Thali -->
   <section class="menu-section" id="thali">
-    <div class="sec-head"><span class="sec-num">08</span><h2>Nepali Thali Set</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">09</span><h2>Nepali Thali Set</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Khana</span><span class="dots"></span><span class="item-price">300</span></div>
       <div class="menu-item"><span class="item-name">Chicken Khana</span><span class="dots"></span><span class="item-price">400</span></div>
@@ -513,8 +554,9 @@
     </div>
   </section>
 
+  <!-- 10. Fried Rice -->
   <section class="menu-section" id="rice">
-    <div class="sec-head"><span class="sec-num">09</span><h2>Fried Rice</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">10</span><h2>Fried Rice</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Fried Rice</span><span class="dots"></span><span class="item-price">180</span></div>
       <div class="menu-item"><span class="item-name">Egg Fried Rice</span><span class="dots"></span><span class="item-price">220</span></div>
@@ -523,8 +565,9 @@
     </div>
   </section>
 
+  <!-- 11. Biryani -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">10</span><h2>Biryani</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">11</span><h2>Biryani</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Biryani</span><span class="dots"></span><span class="item-price">300</span></div>
       <div class="menu-item"><span class="item-name">Egg Biryani</span><span class="dots"></span><span class="item-price">350</span></div>
@@ -533,87 +576,93 @@
     </div>
   </section>
 
+  <!-- 12. Soup -->
   <section class="menu-section" id="soup">
-    <div class="sec-head"><span class="sec-num">11</span><h2>Soup</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">12</span><h2>Soup</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Chicken Soup</span><span class="dots"></span><span class="item-price">220</span></div>
-      <div class="menu-item"><span class="item-name">Mushroom Soup</span><span class="dots"></span><span class="item-price">180</span></div>
       <div class="menu-item"><span class="item-name">Rich Tomato Soup</span><span class="dots"></span><span class="item-price">160</span></div>
       <div class="menu-item"><span class="item-name">Hot &amp; Sour Veg Soup</span><span class="dots"></span><span class="item-price">160</span></div>
+      <div class="menu-item"><span class="item-name">Mushroom Soup</span><span class="dots"></span><span class="item-price">180</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Soup</span><span class="dots"></span><span class="item-price">220</span></div>
       <div class="menu-item"><span class="item-name">Hot &amp; Sour Non-Veg Soup</span><span class="dots"></span><span class="item-price">220</span></div>
     </div>
   </section>
 
+  <!-- 13. Chopsuey -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">12</span><h2>Chopsuey</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">13</span><h2>Chopsuey</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">American Chopsuey</span><span class="dots"></span><span class="item-price">250</span></div>
       <div class="menu-item"><span class="item-name">Chinese Chopsuey</span><span class="dots"></span><span class="item-price">350</span></div>
     </div>
   </section>
 
+  <!-- 14. Veg Snacks -->
   <section class="menu-section" id="snacks">
-    <div class="sec-head"><span class="sec-num">13</span><h2>Veg Snacks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">14</span><h2>Veg Snacks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Mushroom Pakauda</span><span class="dots"></span><span class="item-price">450</span></div>
+      <div class="menu-item"><span class="item-name">Papad Dry / Fry (Per Plate)</span><span class="dots"></span><span class="item-price">100</span></div>
+      <div class="menu-item"><span class="item-name">Aaloo Sadeko</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Aaloo Jeera</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">French Fries</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Green Salad</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Masala Papad (Per Plate)</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Nepali Salad</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Peanut Sadeko</span><span class="dots"></span><span class="item-price">200</span></div>
+      <div class="menu-item"><span class="item-name">Chips Chilli</span><span class="dots"></span><span class="item-price">250</span></div>
       <div class="menu-item"><span class="item-name">Veg Pakauda</span><span class="dots"></span><span class="item-price">280</span></div>
+      <div class="menu-item"><span class="item-name">Mix Veg Boil</span><span class="dots"></span><span class="item-price">320</span></div>
+      <div class="menu-item"><span class="item-name">Sweet Corn Boil</span><span class="dots"></span><span class="item-price">350</span></div>
+      <div class="menu-item"><span class="item-name">Sweet Corn Fry</span><span class="dots"></span><span class="item-price">350</span></div>
+      <div class="menu-item"><span class="item-name">Mushroom Chilli</span><span class="dots"></span><span class="item-price">450</span></div>
+      <div class="menu-item"><span class="item-name">Mushroom Pakauda</span><span class="dots"></span><span class="item-price">450</span></div>
       <div class="menu-item"><span class="item-name">Cheese Pakauda</span><span class="dots"></span><span class="item-price">480</span></div>
       <div class="menu-item"><span class="item-name">Paneer Pakauda</span><span class="dots"></span><span class="item-price">480</span></div>
       <div class="menu-item"><span class="item-name">Paneer Chilli</span><span class="dots"></span><span class="item-price">500</span></div>
-      <div class="menu-item"><span class="item-name">Mushroom Chilli</span><span class="dots"></span><span class="item-price">450</span></div>
-      <div class="menu-item"><span class="item-name">Aaloo Sadeko</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">French Fries</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Chips Chilli</span><span class="dots"></span><span class="item-price">250</span></div>
-      <div class="menu-item"><span class="item-name">Aaloo Jeera</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Peanut Sadeko</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Papad Dry / Fry (Per Plate)</span><span class="dots"></span><span class="item-price">100</span></div>
-      <div class="menu-item"><span class="item-name">Masala Papad (Per Plate)</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Green Salad</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Nepali Salad</span><span class="dots"></span><span class="item-price">200</span></div>
       <div class="menu-item"><span class="item-name">Paneer Gravy</span><span class="dots"></span><span class="item-price">500</span></div>
       <div class="menu-item"><span class="item-name">Motor Paneer</span><span class="dots"></span><span class="item-price">500</span></div>
-      <div class="menu-item"><span class="item-name">Sweet Corn Boil</span><span class="dots"></span><span class="item-price">350</span></div>
-      <div class="menu-item"><span class="item-name">Sweet Corn Fry</span><span class="dots"></span><span class="item-price">350</span></div>
-      <div class="menu-item"><span class="item-name">Mix Veg Boil</span><span class="dots"></span><span class="item-price">320</span></div>
     </div>
   </section>
 
+  <!-- 15. Burger -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">14</span><h2>Burger</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">15</span><h2>Burger</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Veg Burger</span><span class="dots"></span><span class="item-price">250</span></div>
       <div class="menu-item"><span class="item-name">Chicken Burger</span><span class="dots"></span><span class="item-price">350</span></div>
     </div>
   </section>
 
+  <!-- 16. Non-Veg Snacks -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">15</span><h2>Non-Veg Snacks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">16</span><h2>Non-Veg Snacks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Chicken Wings (Per Plate)</span><span class="dots"></span><span class="item-price">500</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Drumstick (3 pcs)</span><span class="dots"></span><span class="item-price">550</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Roast</span><span class="dots"></span><span class="item-price">400</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Fry</span><span class="dots"></span><span class="item-price">400</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Sadeko</span><span class="dots"></span><span class="item-price">500</span></div>
       <div class="menu-item"><span class="item-name">Chicken Boil</span><span class="dots"></span><span class="item-price">400</span></div>
       <div class="menu-item"><span class="item-name">Chicken Chilli with Bone</span><span class="dots"></span><span class="item-price">400</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Chilli Boneless</span><span class="dots"></span><span class="item-price">500</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Pakauda</span><span class="dots"></span><span class="item-price">450</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Sausage Fry (Per Plate)</span><span class="dots"></span><span class="item-price">425</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Fry</span><span class="dots"></span><span class="item-price">400</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Roast</span><span class="dots"></span><span class="item-price">400</span></div>
       <div class="menu-item"><span class="item-name">Chicken Sausage Steam (Per Plate)</span><span class="dots"></span><span class="item-price">400</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Sekuwa</span><span class="dots"></span><span class="item-price">450</span></div>
-      <div class="menu-item"><span class="item-name">Chicken Lollipop</span><span class="dots"></span><span class="item-price">500</span></div>
       <div class="menu-item"><span class="item-name">Chicken Choila</span><span class="dots"></span><span class="item-price">400</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Sausage Fry (Per Plate)</span><span class="dots"></span><span class="item-price">425</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Pakauda</span><span class="dots"></span><span class="item-price">450</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Sekuwa</span><span class="dots"></span><span class="item-price">450</span></div>
       <div class="menu-item"><span class="item-name">Fish Fry (Per Plate)</span><span class="dots"></span><span class="item-price">450</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Wings (Per Plate)</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Chilli Boneless</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Lollipop</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Sadeko</span><span class="dots"></span><span class="item-price">500</span></div>
       <div class="menu-item"><span class="item-name">Fish Curry</span><span class="dots"></span><span class="item-price">500</span></div>
+      <div class="menu-item"><span class="item-name">Chicken Drumstick (3 pcs)</span><span class="dots"></span><span class="item-price">550</span></div>
       <div class="menu-item"><span class="item-name">Egg Pakauda</span><span class="dots"></span><span class="item-price">350</span></div>
-      <div class="menu-item"><span class="item-name">Mutton Fry</span><span class="dots"></span><span class="item-price">950</span></div>
       <div class="menu-item"><span class="item-name">Mutton Gravy</span><span class="dots"></span><span class="item-price">900</span></div>
       <div class="menu-item"><span class="item-name">Mutton Taas</span><span class="dots"></span><span class="item-price">900</span></div>
+      <div class="menu-item"><span class="item-name">Mutton Fry</span><span class="dots"></span><span class="item-price">950</span></div>
     </div>
   </section>
 
+  <!-- 17. MoMo -->
   <section class="menu-section" id="momo">
-    <div class="sec-head"><span class="sec-num">16</span><h2>MoMo</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">17</span><h2>MoMo</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <table class="menu-table">
       <thead><tr><th>Variety</th><th>Steam</th><th>Fried</th><th>C</th><th>Jhol</th></tr></thead>
       <tbody>
@@ -623,20 +672,22 @@
     </table>
   </section>
 
+  <!-- 18. Cold Drinks -->
   <section class="menu-section" id="drinks">
-    <div class="sec-head"><span class="sec-num">17</span><h2>Cold Drinks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">18</span><h2>Cold Drinks</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Coke / Fanta / Pepsi / Dew</span><span class="dots"></span><span class="item-price">100</span></div>
       <div class="menu-item"><span class="item-name">Juice</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Milk Shake (Banana / Strawberry / Vanilla)</span><span class="dots"></span><span class="item-price">300</span></div>
       <div class="menu-item"><span class="item-name">Lassi (Banana / Strawberry / Vanilla)</span><span class="dots"></span><span class="item-price">200</span></div>
-      <div class="menu-item"><span class="item-name">Red Bull (Blue / Red)</span><span class="dots"></span><span class="item-price">400 / 250</span></div>
       <div class="menu-item"><span class="item-name">Badam Drink</span><span class="dots"></span><span class="item-price">220</span></div>
+      <div class="menu-item"><span class="item-name">Milk Shake (Banana / Strawberry / Vanilla)</span><span class="dots"></span><span class="item-price">300</span></div>
+      <div class="menu-item"><span class="item-name">Red Bull (Blue / Red)</span><span class="dots"></span><span class="item-price">400 / 250</span></div>
     </div>
   </section>
 
+  <!-- 19. Fresh Juice -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">18</span><h2>Fresh Juice</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">19</span><h2>Fresh Juice</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
       <div class="menu-item"><span class="item-name">Mango (Per Glass)</span><span class="dots"></span><span class="item-price">200</span></div>
       <div class="menu-item"><span class="item-name">Orange (Per Glass)</span><span class="dots"></span><span class="item-price">200</span></div>
@@ -645,58 +696,86 @@
     </div>
   </section>
 
+  <!-- 20. Beer -->
   <section class="menu-section" id="beer">
-    <div class="sec-head"><span class="sec-num">19</span><h2>Beer</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">20</span><h2>Beer</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Carlsberg</span><span class="dots"></span><span class="item-price">780</span></div>
-      <div class="menu-item"><span class="item-name">Tuborg</span><span class="dots"></span><span class="item-price">700</span></div>
       <div class="menu-item"><span class="item-name">Gorkha</span><span class="dots"></span><span class="item-price">600</span></div>
       <div class="menu-item"><span class="item-name">Nepal Ice</span><span class="dots"></span><span class="item-price">600</span></div>
+      <div class="menu-item"><span class="item-name">Tuborg</span><span class="dots"></span><span class="item-price">700</span></div>
       <div class="menu-item"><span class="item-name">Budweiser</span><span class="dots"></span><span class="item-price">700</span></div>
+      <div class="menu-item"><span class="item-name">Carlsberg</span><span class="dots"></span><span class="item-price">780</span></div>
     </div>
   </section>
 
+  <!-- 21. Can Beer -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">20</span><h2>Can Beer</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">21</span><h2>Can Beer</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
-      <div class="menu-item"><span class="item-name">Tuborg Can Beer</span><span class="dots"></span><span class="item-price">530</span></div>
       <div class="menu-item"><span class="item-name">Gorkha Can Beer</span><span class="dots"></span><span class="item-price">470</span></div>
+      <div class="menu-item"><span class="item-name">Tuborg Can Beer</span><span class="dots"></span><span class="item-price">530</span></div>
     </div>
   </section>
 
+  <!-- 22. Domestic Wine -->
   <section class="menu-section">
-    <div class="sec-head"><span class="sec-num">21</span><h2>Domestic Wine</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">22</span><h2>Domestic Wine</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
+      <div class="menu-item"><span class="item-name">Akira</span><span class="dots"></span><span class="item-price">1350</span></div>
       <div class="menu-item"><span class="item-name">Big Master</span><span class="dots"></span><span class="item-price">1400</span></div>
       <div class="menu-item"><span class="item-name">Devine</span><span class="dots"></span><span class="item-price">1400</span></div>
-      <div class="menu-item"><span class="item-name">Akira</span><span class="dots"></span><span class="item-price">1350</span></div>
     </div>
   </section>
 
+  <!-- 23. Hookah -->
   <section class="menu-section" id="hookah">
-    <div class="sec-head"><span class="sec-num">22</span><h2>Hookah</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <div class="sec-head"><span class="sec-num">23</span><h2>Hookah</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <div class="menu-list">
+      <div class="menu-item"><span class="item-name">Cigarette (Per pc)</span><span class="dots"></span><span class="item-price">35</span></div>
       <div class="menu-item"><span class="item-name">Normal Hookah (Mint / Paan / Double Apple)</span><span class="dots"></span><span class="item-price">500</span></div>
       <div class="menu-item"><span class="item-name">Cloud Hookah (Mint / Paan / Double Apple)</span><span class="dots"></span><span class="item-price">700</span></div>
-      <div class="menu-item"><span class="item-name">Cigarette (Per pc)</span><span class="dots"></span><span class="item-price">35</span></div>
     </div>
   </section>
 
-  <section class="menu-section" id="liquor">
-    <div class="sec-head"><span class="sec-num">23</span><h2>Domestic Liquors</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+  <!-- 24. Domestic Liquors -->
+  <section class="menu-section" id="dom-liquor">
+    <div class="sec-head"><span class="sec-num">24</span><h2>Domestic Liquors</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
     <table class="menu-table">
       <thead><tr><th>Name</th><th>Qtr</th><th>Half</th><th>Full</th></tr></thead>
       <tbody>
-        <tr><td>Old Durbar Regular</td><td>1200</td><td>2350</td><td>4250</td></tr>
-        <tr><td>Old Durbar Chimney</td><td>1300</td><td>2550</td><td>5000</td></tr>
-        <tr><td>Gorkha &amp; Guns</td><td>1300</td><td>2300</td><td>4500</td></tr>
-        <tr><td>Signature Green</td><td>950</td><td>1750</td><td>3400</td></tr>
-        <tr><td>Signature Red</td><td>1050</td><td>1950</td><td>3800</td></tr>
-        <tr><td>Ruslan Vodka</td><td>900</td><td>1750</td><td>3400</td></tr>
-        <tr><td>8848 Vodka</td><td>1000</td><td>1800</td><td>3500</td></tr>
-        <tr><td>Khukuri Rum</td><td>1000</td><td>1800</td><td>3500</td></tr>
         <tr><td>Golden Oak</td><td>600</td><td>1050</td><td>2000</td></tr>
         <tr><td>Black Golden Oak</td><td>650</td><td>1200</td><td>2400</td></tr>
+        <tr><td>Signature Green</td><td>950</td><td>1750</td><td>3400</td></tr>
+        <tr><td>Ruslan Vodka</td><td>900</td><td>1750</td><td>3400</td></tr>
+        <tr><td>Signature Red</td><td>1050</td><td>1950</td><td>3800</td></tr>
+        <tr><td>8848 Vodka</td><td>1000</td><td>1800</td><td>3500</td></tr>
+        <tr><td>Khukuri Rum</td><td>1000</td><td>1800</td><td>3500</td></tr>
+        <tr><td>Old Durbar Regular</td><td>1200</td><td>2350</td><td>4250</td></tr>
+        <tr><td>Gorkha &amp; Guns</td><td>1300</td><td>2300</td><td>4500</td></tr>
+        <tr><td>Old Durbar Chimney</td><td>1300</td><td>2550</td><td>5000</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 25. Imported Liquors -->
+  <section class="menu-section" id="imp-liquor">
+    <div class="sec-head"><span class="sec-num">25</span><h2>Imported Liquors</h2><div class="sec-tick"></div><div class="sec-line"></div></div>
+    <table class="menu-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>90 ml</th>
+          <th>250 ml (Qtr)</th>
+          <th>500 ml (Half)</th>
+          <th>1000 ml (Full)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Absolut Vodka</td><td>850</td><td>2400</td><td>4750</td><td>9500</td></tr>
+        <tr><td>Johnnie Walker Red Label</td><td>900</td><td>2500</td><td>5000</td><td>10000</td></tr>
+        <tr><td>Chivas Regal 12 Yrs</td><td>1100</td><td>3100</td><td>6200</td><td>12400</td></tr>
+        <tr><td>Johnnie Walker Black Label</td><td>1150</td><td>3150</td><td>6250</td><td>12500</td></tr>
+        <tr><td>Johnnie Walker Double Black</td><td>1250</td><td>3500</td><td>7000</td><td>14000</td></tr>
       </tbody>
     </table>
   </section>
@@ -705,7 +784,7 @@
 
 <footer>
   <div class="footer-name">Hotel White Dreams Palace</div>
-  <p>&copy; 2026 Hotel White Dreams Pvt. Ltd. &nbsp;|&nbsp; All Rights Reserved</p>
+  <p>&copy; 2025 Hotel White Dreams Pvt. Ltd. &nbsp;|&nbsp; All Rights Reserved</p>
 </footer>
 
 </body>
